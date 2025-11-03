@@ -1,14 +1,72 @@
 
 // time 
-date.textContent = time(); 
+// temporery comment out date.textContent = time(); 
 // global vriabls/constants 
  let score, answer, level; 
  const levelArr = document.getElementsByName("level"); 
  const scoreArr=[]; 
  //event listeners 
 
+ // date part from csp book 
+
+ var date = new Date();
+ var dom = date.getDate(); 
+ var dow = date.getDay(); 
+ var month = date.getMonth(); 
+ var year = date.getFullYear(); 
+ var mins = date.getMinutes(); 
+ var hour = date.getHours(); 
+ var amPm = "a.m."; 
+ 
+ switch(dow)
+
+{
+    case 0: dow = "Sunday"; break; 
+    case 1: dow = "Monday"; break; 
+    case 2: dow = "Tuesday"; break; 
+    case 3: dow = "wednesday"; break; 
+    case 4: dow = "Thursday"; break; 
+    case 5: dow = "Friday"; break; 
+    case 6: dow = "Saturday"; break; 
+
+}
+
+switch(month)
+{
+    case 0: month = "January"; break; 
+    case 1: month = "February"; break; 
+    case 2: month = "March"; break; 
+    case 3: month = "April"; break; 
+    case 4: month = "May"; break; 
+    case 5: month = "June"; break; 
+    case 6: month = "July"; break; 
+    case 7: month = "August"; break; 
+    case 8: month = "Septemeber"; break; 
+    case 9: month = "October"; break; 
+    case 10: month = "Novemenber"; break; 
+    case 11: month = "December"; break; 
+}
+
+if (hour >= 12)
+{
+    hour -= 12; 
+    amPm = "p.m."; 
+}
+if (hour == 0)
+{
+    hour = 12; 
+}
+if (mins < 10)
+{
+    mins = "0" + mins; 
+}
+alert("Today is " + dow + ", " + month + " " + dom + ", " + year + ". The time is " + hour + ":" + mins + " " + amPm); 
+
+
+
  playBtn.addEventListener("click", play);
- guessBtn.addEventListener("click",makeGuess);
+ guessBtn.addEventListener("click", makeGuess);
+ nameBtn.addEventListener("click", myName); 
 
 
 function time()
@@ -49,12 +107,13 @@ function makeGuess()
     score ++; 
     if (userGuess > answer)
     {
-        msg.textContent = "Too high, guess again";
+        msg.textContent = "Too high, guess again.";
         score++; 
+        
     }
     else if (userGuess < answer)
     {
-        msg.textContent = "Too low, guess again";
+        msg.textContent = "Too low, guess again.";
         score++; 
     }
     else
@@ -62,6 +121,18 @@ function makeGuess()
         msg.textContent = "Correct! It took " + score + " tries."; 
         reset()
         updateScore(); 
+    }
+    if (Math.abs(userGuess-answer) > 6)
+    {
+        msg.textContent += " You are cold."
+    }
+    else if (Math.abs(userGuess-answer) > 4)
+    {
+        msg.textContent += " You are warm."
+    }
+    else
+    {
+        msg.textContent += " You are hot."
     }
 }
 function reset()
@@ -95,4 +166,14 @@ function updateScore(){
     let avg = sum/(scoreArr.length); 
     avgScore.textcontent = "Average Score: " + avg.toFixed(2); 
 
+}
+function myName()
+{
+     const nameInput = document.getElementById('nameInput');
+    const n = nameInput.value.trim(); // this is basically String()
+    if (!n) {
+        nameOutput.textContent = "Please enter your name";
+        return;
+    }
+    nameOutput.textContent = "Hello " + nameInput.value[0].toUpperCase() + nameInput.value.slice(1).toLowerCase() + ", lets play a game :)";
 }
