@@ -6,8 +6,11 @@
   </head>
   <body>
     <p id="date"></p>
-
-    <h3>Level</h3>
+<h3 id ="name"> Whats your name? </h3>
+    <input type = "text" id ="nameInput" placeholder="Enter your name" /> 
+    <button id ="nameBtn">Done</button>
+    <p id = "nameOutput"></p>
+    <h3>Here are the levels: </h3>
     <input type="radio" name="level" id="e" value="3" checked><label for="e">Easy</label>
     <input type="radio" name="level" id="m" value="10"><label for="m">Medium</label>
     <input type="radio" name="level" id="h" value="100"><label for="h">Hard</label>
@@ -18,21 +21,22 @@
     <input type="text" id="guess" disabled>
     <button id="guessBtn" disabled>Guess</button>
     <button id="giveUpBtn" disabled>Give Up</button>
-
-    <h3 id ="name"> Whats your name? </h3>
-    <input type = "text" id ="nameInput" placeholder="Enter your name" /> 
-    <button id ="nameBtn">Done</button>
-    <p id = "nameOutput">hi </p>
-
+    <p id = "timer">Time: 0s </p>
     <h3>Stats</h3>
     <p id="wins">Total wins: 0</p>
     <p id="avgScore">Average Score: </p>
 
-    <h3>Leaderboard</h3>
+    <h3>Leaderboard of Scores</h3>
     <ol>
       <li name="leaderboard">100</li>
       <li name="leaderboard">100</li>
       <li name="leaderboard">100</li>
+    </ol>
+    <h3> Leaderboard of Times</h3>
+    <ol>
+      <li name="leaderboardtime">10s</li>
+      <li name="leaderboardtime">15s</li>
+      <li name="leaderboardtime">20s</li>
     </ol>
   </body>
 </html>
