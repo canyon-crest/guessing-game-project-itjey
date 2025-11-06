@@ -2,10 +2,10 @@
 // time 
 // temporery comment out date.textContent = time(); 
 // global vriabls/constants 
- let score, answer, level; 
- const levelArr = document.getElementsByName("level"); 
- const scoreArr=[]; 
-const timeArr=[];
+let score, answer, level;
+const levelArr = document.getElementsByName("level");
+const scoreArr = [];
+const timeArr = [];
 let timerInterval; // define timerInterval globally
 // define startTime globally
 let startTime;
@@ -14,7 +14,25 @@ const roundDurations = [];
 let roundRunning = false; // true while a round is in progress
 const timerElem = document.getElementById("timer"); // element to show live round time
 const giveUpBtn = document.getElementById("giveUpBtn"); // optional give up button
- //event listeners 
+
+// common DOM elements used in the script (explicitly grab them)
+const playBtn = document.getElementById("playBtn");
+const guessBtn = document.getElementById("guessBtn");
+const guess = document.getElementById("guess");
+const nameBtn = document.getElementById("nameBtn");
+const nameOutput = document.getElementById("nameOutput");
+const msg = document.getElementById("msg");
+const wins = document.getElementById("wins");
+const avgScore = document.getElementById("avgScore");
+
+// player's stored name
+let playerName = "";
+
+// ensure initial button states: don't allow play until name entered
+if (playBtn) playBtn.disabled = true;
+if (giveUpBtn) giveUpBtn.disabled = true;
+
+// event listeners
 if (giveUpBtn) giveUpBtn.addEventListener("click", giveUp);
 
 
@@ -78,7 +96,17 @@ function time()
 }
  function play()
  {
-     playBtn.disabled = true; 
+    // require player name before starting
+    const nameInput = document.getElementById('nameInput');
+    if (!nameInput || !nameInput.value.trim()) {
+        if (nameOutput) nameOutput.textContent = "Please enter your name before playing.";
+        return;
+    }
+    // store player's formatted name
+    playerName = nameInput.value[0].toUpperCase() + nameInput.value.slice(1).toLowerCase();
+    if (nameOutput) nameOutput.textContent = `Hello ${playerName}, let's play a game :)`;
+
+    playBtn.disabled = true;
      guessBtn.disabled = false; 
      guess.disabled = false;
  
@@ -94,6 +122,8 @@ function time()
      msg.textContent = "Guess a number 1-" + level; 
    guess.placeholder = answer; 
     score = 0; 
+        // enable give up while a round is running
+        if (giveUpBtn) giveUpBtn.disabled = false;
     // when the user clicks play, start the timer and dispay it 
 
     startTime = Date.now();                       // replace `let startTime = Date.now();`
@@ -147,7 +177,7 @@ function makeGuess()
          {
              if (score < 3)
              {
-                 msg.textContent += "Your score was excellent, " + name;
+                msg.textContent += "Your score was excellent, " + (playerName || "");
              }
              else if (score < 6)
              {
@@ -192,6 +222,8 @@ function reset()
     // stop live display (do not start a new round)
     if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     if (timerElem) timerElem.textContent = "";
+    // disable give up after reset
+    if (giveUpBtn) giveUpBtn.disabled = true;
 }
 function updateScore(){
     scoreArr.push(score); // adds current score to array of scores 
@@ -229,8 +261,8 @@ function updateTimeLeaderboard(){
     if (roundDurations.length) {
         const fastest = Math.min(...roundDurations);
         const avg = roundDurations.reduce((s,t) => s + t, 0) / roundDurations.length;
-        if (fastestElem) fastestElem.textContent = `Fastest: ${(fastest/1000).toFixed(2)}s`;
-        if (avgElem) avgElem.textContent = `Average: ${(avg/1000).toFixed(2)}s`;
+        if (fastestElem) fastestElem.textContent = `Fastest Time: ${(fastest/1000).toFixed(2)}s`;
+        if (avgElem) avgElem.textContent = `Average Time: ${(avg/1000).toFixed(2)}s`;
     } else {
         if (fastestElem) fastestElem.textContent = "";
         if (avgElem) avgElem.textContent = "";
@@ -243,11 +275,10 @@ function giveUp(){
         return;
     }
     // record elapsed (optional: treat give-up as completed round)
-    if (startTime) roundDurations.push(Date.now() - startTime);
+    // Do NOT log time or score for a give-up. Stop the timer and end round.
     if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     roundRunning = false;
     startTime = null;
-    updateTimeLeaderboard();
     msg.textContent = `You gave up. The answer was ${answer}.`;
     reset();
 
@@ -261,7 +292,10 @@ function myName()
         nameOutput.textContent = "Please enter your name";
         return;
     }
-    nameOutput.textContent = "Hello " + nameInput.value[0].toUpperCase() + nameInput.value.slice(1).toLowerCase() + ", lets play a game :)";
-    let temp = nameInput.value[0].toUpperCase() + nameInput.value.slice(1).toLowerCase(); 
+    // normalize and store the player's name, and enable Play
+    let temp = nameInput.value[0].toUpperCase() + nameInput.value.slice(1).toLowerCase();
+    playerName = temp;
+    nameOutput.textContent = `Hello ${temp}, let's play a game :)`;
     msg.textContent = "Select a Level, " + temp;
+    if (playBtn) playBtn.disabled = false;
 }
