@@ -47,6 +47,7 @@ const dateElem = document.getElementById("date");
  function pad(n){ return n < 10 ? "0"+n : n; }
 function updateClock(){
     const now = new Date(); 
+    let dom = now.getDate();
     let dow = now.getDay();
     let month = now.getMonth();
     let year = now.getFullYear();
@@ -80,7 +81,7 @@ function updateClock(){
     }
     if (hour >= 12) { hour -= 12; amPm = "p.m."; }
     if (hour == 0) { hour = 12; }
-    const fullDate = "Today is " + dow + ", " + month + " " + dow + ", " + year + ". The time is " + hour + ":" + mins + ":" + secs + " " + amPm;
+    const fullDate = "Today is " + dow + ", " + month + " " + dom + ", " + year + ". The time is " + hour + ":" + mins + ":" + secs + " " + amPm;
     if (dateElem) dateElem.textContent = fullDate;
 }
 updateClock();
