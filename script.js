@@ -96,23 +96,19 @@ function time()
     score = 0; 
     // when the user clicks play, start the timer and dispay it 
 
-    let startTime = Date.now();
-    setInterval(() => {
-        let elapsedTime = Date.now() - startTime;
-        let seconds = Math.floor(elapsedTime / 1000);
-        timer.textContent = `Time: ${seconds}s`;
-    }, 1000);
-    timeArr.push(startTime);
-    updateTimeLeaderboard();
+    startTime = Date.now();                       // replace `let startTime = Date.now();`
+    // remove the extra setInterval that used an undefined `timer` variable
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } // add clearing previous interval
     roundRunning = true;
     if (timerElem) timerElem.textContent = `Time: 0.00s`;
-    if (timerInterval) clearInterval(timerInterval);
     timerInterval = setInterval(() => {
         if (!startTime) return;
         const elapsed = Date.now() - startTime;
         if (timerElem) timerElem.textContent = `Time: ${(elapsed/1000).toFixed(2)}s`;
     }, 250);
+
 }
+
 
 function makeGuess()
 {   
@@ -193,8 +189,10 @@ function reset()
          levelArr[i].disabled = false;
 
    }
-   // stop live display (do not start a new round)
-   if (timerElem) timerElem.textContent = "";}
+    // stop live display (do not start a new round)
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    if (timerElem) timerElem.textContent = "";
+}
 function updateScore(){
     scoreArr.push(score); // adds current score to array of scores 
     wins.textContent = "Total wins: " + scoreArr.length; 
@@ -211,7 +209,7 @@ function updateScore(){
         }
     }
     let avg = sum/(scoreArr.length); 
-    avgScore.textcontent = "Average Score: " + avg.toFixed(2); 
+    avgScore.textContent = "Average Score: " + avg.toFixed(2); 
 
 }
 function updateTimeLeaderboard(){
