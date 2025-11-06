@@ -2,6 +2,24 @@
 <html>
   <head>
     <title>JavaScript Number Guessing Game</title>
+    <style>
+      :root{
+        --bg:#0f1115; --panel:#121316; --muted:#9aa0a6; --accent:#3aa0ff; --good:#4CAF50; --bad:#ff7043;
+      }
+      html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:#e6eef6}
+      body{padding:18px}
+      h3, p, label{color:#d7e6f8}
+      input[type="text"], input[type="radio"] + label, button{background:var(--panel);color:inherit;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;margin:6px 4px;border-radius:2px}
+      input[type="text"]{width:220px}
+      button{cursor:pointer}
+      button:disabled{opacity:0.45;cursor:default}
+      #timer, #wins, #avgScore, #avgTime, #msg{color:var(--muted)}
+      ol{background:transparent;padding-left:20px}
+      li{color:var(--muted)}
+      canvas{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.04);border-radius:2px}
+      section#detailedStats{margin-top:18px}
+      /* keep controls square-ish, avoid heavy rounded styling */
+    </style>
     <script src="script.js" defer></script>
   </head>
   <body>
@@ -26,6 +44,7 @@
     <p id="wins">Total wins: 0</p>
     <p id="avgScore">Average Score: </p>
   <p id="avgTime">Average Time: </p>
+    <button id="resetStatsBtn">Reset Stats</button>
 
     <h3>Leaderboard of Scores</h3>
     <ol>
